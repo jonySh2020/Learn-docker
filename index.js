@@ -3,7 +3,8 @@ const { default: mongoose } = require("mongoose");
 
 const session = require("express-session");
 const redis = require("redis");
-let RedisStore = require("connect-redis")(session);
+// let RedisStore = require("connect-redis")(session);
+let RedisStore = require("connect-redis").default;
 
 const {
   MONGO_USER,
@@ -48,18 +49,17 @@ app.use(
   session({
     store: new RedisStore({
       client: redisClient,
-      secret: SESSION_SECRET,
-      cookie: {
-        secure: false,
-        resave: false,
-        saveUninitialized: false,
-        httpOnly: true,
-        maxAge: 30000,
-      },
     }),
+    secret: SESSION_SECRET,
+    cookie: {
+      secure: false,
+      resave: false,
+      saveUninitialized: false,
+      httpOnly: true,
+      maxAge: 30000,
+    },
   })
 );
-
 app.get("/", (req, res) => {
   res.send("Hello Dev");
 });
