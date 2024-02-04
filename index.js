@@ -1,5 +1,6 @@
 const express = require("express");
 const { default: mongoose } = require("mongoose");
+const cors = require('cors')
 
 const session = require("express-session");
 const redis = require("redis");
@@ -44,6 +45,9 @@ function retryConnection() {
 }
 
 retryConnection();
+
+app.enable("trust proxy")
+app.use(cors())
 
 app.use(
   session({
